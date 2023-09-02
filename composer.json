@@ -1,0 +1,18 @@
+{
+  "autoload": {
+    "psr-4": {
+      "Crypto\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Crypto\\Test\\": "tests/"
+    }
+  },
+  "require-dev": {
+    "phpunit/phpunit": "*"
+  },
+  "require": {
+    "ext-openssl": "*"
+  }
+}
