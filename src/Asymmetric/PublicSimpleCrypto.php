@@ -1,47 +1,48 @@
 <?php
 
-    namespace Crypto\Single;
+    namespace Crypto\Asymmetric;
 
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
 
-    class PrivateCrypto implements CryptoInterface
+    class PublicSimpleCrypto implements CryptoInterface
     {
-        protected string $privateKey;
+        protected string $publicKey;
 
         /**
          * @throws CryptoException
          */
         public function __construct(
-            string $privateKey,
-            protected ?string $passphrase = null
-        ){
-            if (!preg_match("/^([-A-z ]+)\r*\n/m", $privateKey)) {
-                if (!is_file($privateKey)) {
-                    throw new CryptoException("private key file not found \"{$privateKey}\"");
+            string $publicKey
+        )
+        {
+            if (!preg_match("/^([-A-z ]+)\r*\n/m", $publicKey)) {
+                if (!is_file($publicKey)) {
+                    throw new CryptoException("public key file not found \"{$publicKey}\"", 201);
                 }
-                $privateKey = "file://{$privateKey}";
+                $publicKey = "file://{$publicKey}";
             }
-            $this->privateKey = $privateKey;
+            $this->publicKey = $publicKey;
         }
 
         /**
          * gets the OpenSSLAsymmetricKey ot this instance or throws a CryptoException in case of fail
+         *
          * @return \OpenSSLAsymmetricKey
          * @throws CryptoException
          */
-        private function getKey(): \OpenSSLAsymmetricKey
+        protected function getKey(): \OpenSSLAsymmetricKey
         {
-            $key = openssl_pkey_get_private($this->privateKey, $this->passphrase);
+            $key = openssl_get_publickey($this->publicKey);
             if (!$key instanceof \OpenSSLAsymmetricKey) {
-                //TODO: add exception message
-                throw new CryptoException("");
+                throw new CryptoException("failed to create open ssl key", 202);
             }
             return $key;
         }
 
         /**
-         * encoding the data with the private key and reruns a base64 string back or throws a CryptoException in case of failing the process
+         * encoding the data with the public key and reruns a base64 string back or throws a CryptoException in case of failing the process
+         *
          * @param string|\Stringable $data - data that has to encoded
          * @return string - base64 string
          * @throws CryptoException
@@ -49,14 +50,14 @@
         public function encode(string|\Stringable $data): string
         {
             $output = "";
-            $encodeProcess = openssl_private_encrypt(
+            $encodeProcess = openssl_public_encrypt(
                 (string) $data,
                 $output,
-                $this->getKey()
+                $this->getKey(),
+                OPENSSL_SSLV23_PADDING
             );
             if (!$encodeProcess) {
-                //TODO: add exception message
-                throw new CryptoException("");
+                throw new CryptoException("fail to encode", 203);
             }
             return base64_encode($output);
         }
@@ -72,20 +73,19 @@
         {
             $cipher = base64_decode($base64Cipher);
             if (!is_string($cipher)) {
-                //TODO: add exception message
-                throw new CryptoException("");
+                throw new CryptoException("fail to encode base64", 204);
             }
 
             $output = "";
-            $decryptProcess = openssl_private_decrypt(
+            $decryptProcess = openssl_public_decrypt(
                 $cipher,
                 $output,
                 $this->getKey()
             );
             if (!$decryptProcess) {
-                //TODO: add exception message
-                throw new CryptoException("");
+                throw new CryptoException("fail to decode", 205);
             }
             return $output;
         }
+
     }
