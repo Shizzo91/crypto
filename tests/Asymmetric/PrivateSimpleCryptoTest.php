@@ -38,39 +38,73 @@
         /**
          * @dataProvider keyProvider
          */
-        public function testEncode(string $privateKey): void
+        public function testEncode(
+            string $privateKey,
+            ?string $passphrase,
+            string $publicKey
+        ): void
         {
-            $privateCrypto = new PrivateSimpleCrypto($privateKey);
+            $privateCrypto = new PrivateSimpleCrypto($privateKey, $passphrase);
             self::assertIsString($privateCrypto->encode("hallo"));
         }
 
         /**
          * @dataProvider keyProvider
          */
-        public function testEncodeString(string $privateKey): void
+        public function testEncodeString(
+            string $privateKey,
+            ?string $passphrase,
+            string $publicKey
+        ): void
         {
-            $privateCrypto = new PrivateSimpleCrypto($privateKey);
+            $privateCrypto = new PrivateSimpleCrypto($privateKey, $passphrase);
             self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $privateCrypto->encode("hallo"));
         }
 
         /**
          * @dataProvider keyProvider
          */
-        public function testDecodeString(string $privateKey): void
+        public function testDecodeString(
+            string $privateKey,
+            ?string $passphrase,
+            string $publicKey
+        ): void
         {
-            $data = "hallo";
-            $privateCrypto = new PrivateSimpleCrypto($privateKey);
-            $publicCrypto = new PublicSimpleCrypto(self::$publicKey);
+            $data = "dsfkljsadflsadfsd";
+            $privateCrypto = new PrivateSimpleCrypto($privateKey, $passphrase);
+            $publicCrypto = new PublicSimpleCrypto($publicKey);
             $encode = $publicCrypto->encode($data);
             self::assertSame($data, $privateCrypto->decode($encode));
         }
 
         public static function keyProvider(): array
         {
-            $key = dirname(__DIR__, 2)."/private.pem";
+            $private1 = dirname(__DIR__, 2)."/private.pem";
+            $public1 = dirname(__DIR__, 2)."/public.pem";
+            $private2 = dirname(__DIR__, 2)."/private-2.pem";
+            $public2 = dirname(__DIR__, 2)."/public-2.pem";
+            $passphrase2 = "hallo";
             return [
-                "key" => [$key],
-                "string" => [file_get_contents($key)]
+                "key" => [
+                    $private1,
+                    null,
+                    $public1
+                ],
+                "string" => [
+                    file_get_contents($private1),
+                    null,
+                    $public1
+                ],
+                "key-2" => [
+                    $private2,
+                    $passphrase2,
+                    $public2
+                ],
+                "string-2" => [
+                    file_get_contents($private2),
+                    $passphrase2,
+                    $public2
+                ],
             ];
         }
     }

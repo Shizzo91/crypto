@@ -4,6 +4,8 @@
 
     interface CryptoInterface
     {
+        public const ENCRYPT_BLOCK_SIZE = 200;
+        public const DECRYPT_BLOCK_SIZE = 256;
 
         /**
          * define the encode function

@@ -49,16 +49,26 @@
          */
         public function encode(string|\Stringable $data): string
         {
-            $output = "";
-            $encodeProcess = openssl_public_encrypt(
-                (string) $data,
-                $output,
-                $this->getKey(),
-                OPENSSL_SSLV23_PADDING
+            $dataChunks = str_split((string) $data, self::ENCRYPT_BLOCK_SIZE);
+
+            $output = array_reduce(
+                $dataChunks,
+                function (string $carry, string $chunk): string {
+                    $chunkOutput = "";
+                    $encodeProcess = openssl_public_encrypt(
+                        $chunk,
+                        $chunkOutput,
+                        $this->getKey(),
+                        OPENSSL_SSLV23_PADDING
+                    );
+                    if (!$encodeProcess) {
+                        $errorMsg = openssl_error_string();
+                        throw new CryptoException("fail to encode: \"{$errorMsg}\"", 203);
+                    }
+                    return $carry.$chunkOutput;
+                },
+                ""
             );
-            if (!$encodeProcess) {
-                throw new CryptoException("fail to encode", 203);
-            }
             return base64_encode($output);
         }
 
@@ -76,16 +86,25 @@
                 throw new CryptoException("fail to encode base64", 204);
             }
 
-            $output = "";
-            $decryptProcess = openssl_public_decrypt(
-                $cipher,
-                $output,
-                $this->getKey()
+            $cipherChunks = str_split($cipher, self::DECRYPT_BLOCK_SIZE);
+
+            return array_reduce(
+                $cipherChunks,
+                function (string $carry, string $cipherChunk): string {
+                    $chunkOutput = "";
+                    $decryptProcess = openssl_public_decrypt(
+                        $cipherChunk,
+                        $chunkOutput,
+                        $this->getKey()
+                    );
+                    if (!$decryptProcess) {
+                        $errorMsg = openssl_error_string();
+                        throw new CryptoException("fail to decode: \"{$errorMsg}\"", 205);
+                    }
+                    return $carry.$chunkOutput;
+                },
+                ""
             );
-            if (!$decryptProcess) {
-                throw new CryptoException("fail to decode", 205);
-            }
-            return $output;
         }
 
     }
