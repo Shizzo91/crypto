@@ -25,7 +25,7 @@
         public function testFileFound(): void
         {
             $private = new PrivateSimpleCrypto(self::$privateKey);
-            self::assertInstanceOf("Crypto\Asymmetric\PrivateSimpleCrypto", $private);
+            self::assertInstanceOf(PrivateSimpleCrypto::class, $private);
         }
 
         public function testFileNotFound(): void
