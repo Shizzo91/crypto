@@ -7,6 +7,7 @@
     }
   ],
   "name": "shizzo91/crypto",
+  "description": "From symmetric to hybrid encryption, everything is possible. There is symmetric encryption, asymmetric encryption, multiple asymmetric encryption, hybrid encryption and multiple hybrid encryption.",
   "autoload": {
     "psr-4": {
       "Crypto\\": "src/"
@@ -21,6 +22,7 @@
     "phpunit/phpunit": "^10.3.2"
   },
   "require": {
+    "php": ">=8.2",
     "ext-openssl": "*"
   }
 }
