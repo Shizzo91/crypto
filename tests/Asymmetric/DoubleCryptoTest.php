@@ -43,7 +43,7 @@
         ): void
         {
             $doubleCrypto = DoubleCrypto::create($publicKey, $privateKey, $passphrase);
-            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $doubleCrypto->encode("hallo"));
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $doubleCrypto->encodeAsBase64("hallo"));
         }
 
         /**
@@ -55,7 +55,7 @@
             ?string $passphrase1,
             string $public1,
             string $private2,
-            ?string $passphrase2,
+            ?string $passphrase2
         ): void
         {
             $data = "hello world";
@@ -72,12 +72,23 @@
 
             $chunks = array_chunk(self::keyProvider(), 2);
             foreach ($chunks as $i => $chunk) {
-                $index = match ($i) {
-                  0 => "key-only",
-                  1 => "key-mix-1",
-                  2 => "key-mix-2",
-                  3 => "key-text",
-                };
+                $index = "";
+                switch ($i) {
+                    case 0:
+                        $index = "key-only";
+                        break;
+                    case 1:
+                        $index = "key-mix-1";
+                        break;
+                    case 2:
+                        $index = "key-mix-2";
+                        break;
+                    case 3:
+                        $index = "key-text";
+                        break;
+                }
+
+
 
                 yield $index."-1" => array_merge(...$chunk);
                 yield $index."-2" => array_merge(...array_reverse($chunk));

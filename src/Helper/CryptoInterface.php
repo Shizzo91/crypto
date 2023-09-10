@@ -4,21 +4,30 @@
 
     interface CryptoInterface
     {
-        public const ENCRYPT_BLOCK_SIZE = 200;
-        public const DECRYPT_BLOCK_SIZE = 256;
+        const ENCRYPT_BLOCK_SIZE = 200;
+        const DECRYPT_BLOCK_SIZE = 256;
 
         /**
          * define the encode function
-         * @param string|\Stringable $data
+         * @param string $data
          * @return string
          */
-        public function encode(string|\Stringable $data): string;
+        public function encode(string $data): string;
+
+        /**
+         * define the encode function
+         * @param string $data
+         * @return string
+         */
+        public function encodeAsBase64(string $data): string;
 
         /**
          * define the decode function
          * @param string $base64Cipher
          * @return string
          */
-        public function decode(string $base64Cipher): string;
+        public function decode(string $cipher): string;
+
+        public function decodeFromBase64(string $base64Cipher): string;
 
     }

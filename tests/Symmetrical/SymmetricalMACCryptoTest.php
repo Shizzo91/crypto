@@ -2,11 +2,13 @@
 
     namespace Crypto\Test\Symmetrical;
 
-    use Crypto\Symmetrical\SymmetricalCrypto;
+    use Crypto\Symmetrical\SymmetricalMACCrypto;
     use PHPUnit\Framework\TestCase;
 
-    class CryptoTest extends TestCase
+    class SymmetricalMACCryptoTest extends TestCase
     {
+        private static $length = 20;
+
         public static function generateRandomString($length = 10): string
         {
             $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -17,24 +19,13 @@
             }
             return $randomString;
         }
-        public static $password;
-        protected function setUp(): void
-        {
-            parent::setUp();
-            try {
-                self::$password = self::generateRandomString(random_int(10, 25));
-            } catch (\Exception $e) {
-                self::$password = self::generateRandomString(22);
-            }
-        }
-
 
         /**
          * @dataProvider dataProvider
          */
         public function testEncode(string $value): void
         {
-            $crypto = new SymmetricalCrypto(self::$password);
+            $crypto = new SymmetricalMACCrypto(self::$length);
             self::assertIsString($crypto->encodeAsBase64($value));
         }
 
@@ -43,7 +34,7 @@
          */
         public function testEncodeString(string $value): void
         {
-            $crypto = new SymmetricalCrypto(self::$password);
+            $crypto = new SymmetricalMACCrypto(self::$length);
             self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $crypto->encodeAsBase64($value));
         }
 
@@ -52,7 +43,7 @@
          */
         public function testDecode(string $value): void
         {
-            $crypto = new SymmetricalCrypto(self::$password);
+            $crypto = new SymmetricalMACCrypto(self::$length);
             $encoded = $crypto->encode($value);
             self::assertSame($value, $crypto->decode($encoded));
         }
@@ -78,5 +69,4 @@
         {
             return iterator_to_array(self::dataProviderRaw());
         }
-
     }

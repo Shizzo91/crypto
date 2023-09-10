@@ -7,10 +7,17 @@
     use Crypto\Asymmetric\PublicSimpleCrypto;
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
     use Crypto\Symmetrical\SymmetricalCrypto;
 
     class HybridCrypto implements CryptoInterface
     {
+        use CryptoTrait;
+        protected $asymmetricCrypto;
+        protected $symmetricalCrypto;
+
+
+
         /**
          * @param string $password
          * @param PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto
@@ -18,8 +25,8 @@
          */
         public static function create(
             string $password,
-            PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto,
-        )
+            $asymmetricCrypto
+        ): HybridCrypto
         {
             $crypto = new SymmetricalCrypto($password);
             return new self($asymmetricCrypto, $crypto);
@@ -81,15 +88,18 @@
          * @param SymmetricalCrypto $symmetricalCrypto
          */
         public function __construct(
-            protected PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto,
-            protected SymmetricalCrypto                                   $symmetricalCrypto,
-        ){}
+            $asymmetricCrypto,
+            SymmetricalCrypto $symmetricalCrypto
+        ){
+            $this->symmetricalCrypto = $symmetricalCrypto;
+            $this->asymmetricCrypto = $asymmetricCrypto;
+        }
 
         /**
          * @inheritDoc
          * @throws CryptoException
          */
-        public function encode(\Stringable|string $data): string
+        public function encode(string $data): string
         {
             $symmetricalEncodedData = $this->symmetricalCrypto->encode($data);
             return $this->asymmetricCrypto->encode($symmetricalEncodedData);
@@ -99,9 +109,9 @@
          * @inheritDoc
          * @throws CryptoException
          */
-        public function decode(string $base64Cipher): string
+        public function decode(string $cipher): string
         {
-            $asymmetricDecoded = $this->asymmetricCrypto->decode($base64Cipher);
+            $asymmetricDecoded = $this->asymmetricCrypto->decode($cipher);
             return $this->symmetricalCrypto->decode($asymmetricDecoded);
         }
     }

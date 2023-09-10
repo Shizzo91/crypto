@@ -4,9 +4,14 @@
 
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
 
     class DoubleCrypto implements CryptoInterface
     {
+        use CryptoTrait;
+        protected $publicSimpleCrypto;
+        protected $privateSimpleCrypto;
+
         /**
          * @param string $publicKey
          * @param string $privateKey
@@ -26,16 +31,19 @@
         }
 
         public function __construct(
-            protected PublicSimpleCrypto $publicSimpleCrypto,
-            protected PrivateSimpleCrypto $privateSimpleCrypto
-        ){}
+            PublicSimpleCrypto $publicSimpleCrypto,
+            PrivateSimpleCrypto $privateSimpleCrypto
+        ){
+            $this->privateSimpleCrypto = $privateSimpleCrypto;
+            $this->publicSimpleCrypto = $publicSimpleCrypto;
+        }
 
         /**
-         * @param \Stringable|string $data
+         * @param string $data
          * @return string
          * @throws CryptoException
          */
-        public function encode(\Stringable|string $data): string
+        public function encode(string $data): string
         {
             $publicEncodeData = $this->publicSimpleCrypto->encode($data);
             return $this->privateSimpleCrypto->encode($publicEncodeData);

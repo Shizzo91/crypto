@@ -9,10 +9,10 @@
 
     class PublicSimpleCryptoTest extends TestCase
     {
-        public static string $privateKey;
-        public static string $publicKey;
-        public static string $fakePrivateKey;
-        public static string $fakePublicKey;
+        public static $privateKey;
+        public static $publicKey;
+        public static $fakePrivateKey;
+        public static $fakePublicKey;
         protected function setUp(): void
         {
             parent::setUp();
@@ -41,7 +41,7 @@
         public function testEncode(string $publicKey): void
         {
             $publicCrypto = new PublicSimpleCrypto($publicKey);
-            self::assertIsString($publicCrypto->encode("hallo"));
+            self::assertIsString($publicCrypto->encodeAsBase64("hallo"));
         }
 
         /**
@@ -50,7 +50,7 @@
         public function testEncodeString(string $publicKey): void
         {
             $publicCrypto = new PublicSimpleCrypto($publicKey);
-            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $publicCrypto->encode("hallo"));
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $publicCrypto->encodeAsBase64("hallo"));
         }
 
         /**
