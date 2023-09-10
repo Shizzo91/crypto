@@ -7,10 +7,12 @@
     use Crypto\Asymmetric\PublicSimpleCrypto;
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
     use Crypto\Symmetrical\SymmetricalCrypto;
 
     class HybridCrypto implements CryptoInterface
     {
+        use CryptoTrait;
         protected $asymmetricCrypto;
         protected $symmetricalCrypto;
 
@@ -107,9 +109,9 @@
          * @inheritDoc
          * @throws CryptoException
          */
-        public function decode(string $base64Cipher): string
+        public function decode(string $cipher): string
         {
-            $asymmetricDecoded = $this->asymmetricCrypto->decode($base64Cipher);
+            $asymmetricDecoded = $this->asymmetricCrypto->decode($cipher);
             return $this->symmetricalCrypto->decode($asymmetricDecoded);
         }
     }

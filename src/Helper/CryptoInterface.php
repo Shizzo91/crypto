@@ -15,10 +15,19 @@
         public function encode(string $data): string;
 
         /**
+         * define the encode function
+         * @param string $data
+         * @return string
+         */
+        public function encodeAsBase64(string $data): string;
+
+        /**
          * define the decode function
          * @param string $base64Cipher
          * @return string
          */
-        public function decode(string $base64Cipher): string;
+        public function decode(string $cipher): string;
+
+        public function decodeFromBase64(string $base64Cipher): string;
 
     }

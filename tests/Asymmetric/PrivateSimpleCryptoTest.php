@@ -45,7 +45,7 @@
         ): void
         {
             $privateCrypto = new PrivateSimpleCrypto($privateKey, $passphrase);
-            self::assertIsString($privateCrypto->encode("hallo"));
+            self::assertIsString($privateCrypto->encodeAsBase64("hallo"));
         }
 
         /**
@@ -58,7 +58,7 @@
         ): void
         {
             $privateCrypto = new PrivateSimpleCrypto($privateKey, $passphrase);
-            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $privateCrypto->encode("hallo"));
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $privateCrypto->encodeAsBase64("hallo"));
         }
 
         /**

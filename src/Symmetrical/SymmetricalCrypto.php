@@ -4,10 +4,11 @@
 
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
 
     class SymmetricalCrypto implements CryptoInterface
     {
-
+        use CryptoTrait;
         protected $hashedPassword;
         public function __construct(
             string $password
@@ -18,6 +19,7 @@
         /**
          * @inheritDoc
          * @throws CryptoException
+         * @throws \Exception
          */
         public function encode(string $data): string
         {
@@ -26,38 +28,35 @@
                 (string) $data,
                 "AES-256-CBC",
                 $this->hashedPassword,
-                0,
+                OPENSSL_RAW_DATA,
                 $iv
             );
 
             if ($encryptedRaw === false) {
-                throw new CryptoException("", 301);
+                throw new CryptoException("encoding failed", 301);
             }
 
-            $encryptedRawCombine = $iv.base64_decode($encryptedRaw);
-
-            return base64_encode($encryptedRawCombine);
+            return $iv.$encryptedRaw;
         }
 
         /**
          * @inheritDoc
          * @throws CryptoException
          */
-        public function decode(string $base64Cipher): string
+        public function decode(string $cipher): string
         {
-            $cipher = base64_decode($base64Cipher);
             $iv = substr($cipher,0,16);
-            $encrypted = base64_encode(substr($cipher,16));
+            $encrypted = substr($cipher,16);
             $decrypt = openssl_decrypt(
                 $encrypted,
                 "AES-256-CBC",
                 $this->hashedPassword,
-                0,
+                OPENSSL_RAW_DATA,
                 $iv
             );
 
             if ($decrypt === false) {
-                throw new CryptoException("", 302);
+                throw new CryptoException("decode failed", 302);
             }
 
             return $decrypt;

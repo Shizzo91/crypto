@@ -43,7 +43,7 @@
         ): void
         {
             $doubleCrypto = DoubleCrypto::create($publicKey, $privateKey, $passphrase);
-            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $doubleCrypto->encode("hallo"));
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $doubleCrypto->encodeAsBase64("hallo"));
         }
 
         /**

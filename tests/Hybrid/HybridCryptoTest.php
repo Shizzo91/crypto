@@ -34,7 +34,7 @@
         public function testEncode(HybridCrypto $hybridCrypto): void
         {
             $value = self::generateRandomString();
-            self::assertIsString($hybridCrypto->encode($value));
+            self::assertIsString($hybridCrypto->encodeAsBase64($value));
         }
 
 
@@ -44,7 +44,7 @@
         public function testEncodeString(HybridCrypto $hybridCrypto): void
         {
             $value = self::generateRandomString();
-            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $hybridCrypto->encode($value));
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $hybridCrypto->encodeAsBase64($value));
         }
 
 

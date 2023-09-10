@@ -4,9 +4,11 @@
 
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
 
     class PrivateSimpleCrypto implements CryptoInterface
     {
+        use CryptoTrait;
         protected $privateKey;
         protected $passphrase;
 
@@ -59,7 +61,7 @@
                 ""
             );
 
-            return base64_encode($output);
+            return $output;
         }
 
         /**
@@ -69,13 +71,8 @@
          * @return string
          * @throws CryptoException
          */
-        public function decode(string $base64Cipher): string
+        public function decode(string $cipher): string
         {
-            $cipher = base64_decode($base64Cipher);
-            if (!is_string($cipher)) {
-                throw new CryptoException("fail to encode base64", 104);
-            }
-
             $cipherChunks = str_split($cipher, self::DECRYPT_BLOCK_SIZE);
 
             return array_reduce(

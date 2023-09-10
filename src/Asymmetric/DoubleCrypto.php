@@ -4,9 +4,11 @@
 
     use Crypto\Helper\CryptoException;
     use Crypto\Helper\CryptoInterface;
+    use Crypto\Helper\CryptoTrait;
 
     class DoubleCrypto implements CryptoInterface
     {
+        use CryptoTrait;
         protected $publicSimpleCrypto;
         protected $privateSimpleCrypto;
 
