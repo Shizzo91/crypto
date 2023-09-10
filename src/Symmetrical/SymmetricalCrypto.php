@@ -8,7 +8,7 @@
     class SymmetricalCrypto implements CryptoInterface
     {
 
-        protected string $hashedPassword;
+        protected $hashedPassword;
         public function __construct(
             string $password
         ){
@@ -19,7 +19,7 @@
          * @inheritDoc
          * @throws CryptoException
          */
-        public function encode(\Stringable|string $data): string
+        public function encode(string $data): string
         {
             $iv = random_bytes(16);
             $encryptedRaw = openssl_encrypt(

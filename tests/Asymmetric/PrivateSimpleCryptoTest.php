@@ -9,10 +9,10 @@
 
     class PrivateSimpleCryptoTest extends TestCase
     {
-        public static string $privateKey;
-        public static string $publicKey;
-        public static string $fakePrivateKey;
-        public static string $fakePublicKey;
+        public static $privateKey;
+        public static $publicKey;
+        public static $fakePrivateKey;
+        public static $fakePublicKey;
         protected function setUp(): void
         {
             parent::setUp();

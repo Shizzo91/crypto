@@ -18,11 +18,11 @@
       "Crypto\\Test\\": "tests/"
     }
   },
-  "require-dev": {
-    "phpunit/phpunit": "^10.3.2"
-  },
   "require": {
-    "php": ">=8.2",
+    "php": ">=7.3",
     "ext-openssl": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^9"
   }
 }

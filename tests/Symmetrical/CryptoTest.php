@@ -17,7 +17,7 @@
             }
             return $randomString;
         }
-        public static string $password;
+        public static $password;
         protected function setUp(): void
         {
             parent::setUp();

@@ -11,6 +11,11 @@
 
     class HybridCrypto implements CryptoInterface
     {
+        protected $asymmetricCrypto;
+        protected $symmetricalCrypto;
+
+
+
         /**
          * @param string $password
          * @param PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto
@@ -18,8 +23,8 @@
          */
         public static function create(
             string $password,
-            PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto,
-        )
+            $asymmetricCrypto
+        ): HybridCrypto
         {
             $crypto = new SymmetricalCrypto($password);
             return new self($asymmetricCrypto, $crypto);
@@ -81,15 +86,18 @@
          * @param SymmetricalCrypto $symmetricalCrypto
          */
         public function __construct(
-            protected PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto,
-            protected SymmetricalCrypto                                   $symmetricalCrypto,
-        ){}
+            $asymmetricCrypto,
+            SymmetricalCrypto $symmetricalCrypto
+        ){
+            $this->symmetricalCrypto = $symmetricalCrypto;
+            $this->asymmetricCrypto = $asymmetricCrypto;
+        }
 
         /**
          * @inheritDoc
          * @throws CryptoException
          */
-        public function encode(\Stringable|string $data): string
+        public function encode(string $data): string
         {
             $symmetricalEncodedData = $this->symmetricalCrypto->encode($data);
             return $this->asymmetricCrypto->encode($symmetricalEncodedData);
