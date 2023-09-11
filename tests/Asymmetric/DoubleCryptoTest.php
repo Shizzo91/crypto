@@ -67,6 +67,71 @@
             self::assertSame($data, $endDouble->decode($encode));
         }
 
+        /**
+         * @dataProvider decodeKeyProvider
+         */
+        public function testDecodeBase64(
+            string $public2,
+            string $private1,
+            ?string $passphrase1,
+            string $public1,
+            string $private2,
+            ?string $passphrase2
+        ): void
+        {
+            $data = "hello world";
+            $startDouble = DoubleCrypto::create($public2, $private1, $passphrase1);
+            $endDouble = DoubleCrypto::create($public1, $private2, $passphrase2);
+
+            $encode = $startDouble->encodeAsBase64($data);
+
+            self::assertSame($data, $endDouble->decodeFromBase64($encode));
+        }
+
+
+        /**
+         * @dataProvider decodeKeyProvider
+         */
+        public function testDecodeGzip(
+            string $public2,
+            string $private1,
+            ?string $passphrase1,
+            string $public1,
+            string $private2,
+            ?string $passphrase2
+        ): void
+        {
+            $data = "hello world";
+            $startDouble = DoubleCrypto::create($public2, $private1, $passphrase1);
+            $endDouble = DoubleCrypto::create($public1, $private2, $passphrase2);
+
+            $encode = $startDouble->encodeAsGzip($data);
+
+            self::assertSame($data, $endDouble->decodeFromGzip($encode));
+        }
+
+
+        /**
+         * @dataProvider decodeKeyProvider
+         */
+        public function testDecodeGzipBase64(
+            string $public2,
+            string $private1,
+            ?string $passphrase1,
+            string $public1,
+            string $private2,
+            ?string $passphrase2
+        ): void
+        {
+            $data = "hello world";
+            $startDouble = DoubleCrypto::create($public2, $private1, $passphrase1);
+            $endDouble = DoubleCrypto::create($public1, $private2, $passphrase2);
+
+            $encode = $startDouble->encodeAsGzipBase64($data);
+
+            self::assertSame($data, $endDouble->decodeFromGzipBase64($encode));
+        }
+
         public static function decodeKeyProvider(): \Generator
         {
 

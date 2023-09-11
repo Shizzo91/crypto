@@ -9,6 +9,7 @@
     use Crypto\Helper\CryptoInterface;
     use Crypto\Helper\CryptoTrait;
     use Crypto\Symmetrical\SymmetricalCrypto;
+    use Crypto\Symmetrical\SymmetricalMACCrypto;
 
     class HybridCrypto implements CryptoInterface
     {
@@ -83,13 +84,38 @@
             return self::create($password, $doubleCrypto);
         }
 
+
+        /**
+         * @param string $publicKey
+         * @param string $privateKey
+         * @param string|null $passphrase
+         * @param int $length
+         * @return HybridCrypto
+         * @throws CryptoException
+         */
+        public static function createDoubleMAC(
+            string $publicKey,
+            string $privateKey,
+            ?string $passphrase = null,
+            int $length = 20
+        ): HybridCrypto
+        {
+            $macCrypto = new SymmetricalMACCrypto($length);
+            $double = DoubleCrypto::create(
+                $publicKey,
+                $privateKey,
+                $passphrase
+            );
+            return new self($double, $macCrypto);
+        }
+
         /**
          * @param PublicSimpleCrypto|PrivateSimpleCrypto|DoubleCrypto $asymmetricCrypto
-         * @param SymmetricalCrypto $symmetricalCrypto
+         * @param SymmetricalCrypto|SymmetricalMACCrypto $symmetricalCrypto
          */
         public function __construct(
             $asymmetricCrypto,
-            SymmetricalCrypto $symmetricalCrypto
+            $symmetricalCrypto
         ){
             $this->symmetricalCrypto = $symmetricalCrypto;
             $this->asymmetricCrypto = $asymmetricCrypto;

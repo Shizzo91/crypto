@@ -56,13 +56,49 @@
         /**
          * @dataProvider keyProvider
          */
-        public function testDecodeString(string $publicKey): void
+        public function testDecode(string $publicKey): void
         {
             $data = "hallo";
             $privateCrypto = new PrivateSimpleCrypto(self::$privateKey);
             $publicCrypto = new PublicSimpleCrypto($publicKey);
             $encode = $privateCrypto->encode($data);
             self::assertSame($data, $publicCrypto->decode($encode));
+        }
+
+        /**
+         * @dataProvider keyProvider
+         */
+        public function testDecodeBase64(string $publicKey): void
+        {
+            $data = "hallo";
+            $privateCrypto = new PrivateSimpleCrypto(self::$privateKey);
+            $publicCrypto = new PublicSimpleCrypto($publicKey);
+            $encode = $privateCrypto->encodeAsBase64($data);
+            self::assertSame($data, $publicCrypto->decodeFromBase64($encode));
+        }
+
+        /**
+         * @dataProvider keyProvider
+         */
+        public function testDecodeGzip(string $publicKey): void
+        {
+            $data = "hallo";
+            $privateCrypto = new PrivateSimpleCrypto(self::$privateKey);
+            $publicCrypto = new PublicSimpleCrypto($publicKey);
+            $encode = $privateCrypto->encodeAsGzip($data);
+            self::assertSame($data, $publicCrypto->decodeFromGzip($encode));
+        }
+
+        /**
+         * @dataProvider keyProvider
+         */
+        public function testDecodeGzipBase64(string $publicKey): void
+        {
+            $data = "hallo";
+            $privateCrypto = new PrivateSimpleCrypto(self::$privateKey);
+            $publicCrypto = new PublicSimpleCrypto($publicKey);
+            $encode = $privateCrypto->encodeAsGzipBase64($data);
+            self::assertSame($data, $publicCrypto->decodeFromGzipBase64($encode));
         }
 
 

@@ -5,7 +5,7 @@
     use Crypto\Symmetrical\SymmetricalCrypto;
     use PHPUnit\Framework\TestCase;
 
-    class CryptoTest extends TestCase
+    class SymmetricalCryptoTest extends TestCase
     {
         public static function generateRandomString($length = 10): string
         {
@@ -50,11 +50,50 @@
         /**
          * @dataProvider dataProvider
          */
+        public function testEncodeGzipString(string $value): void
+        {
+            $crypto = new SymmetricalCrypto(self::$password);
+            self::assertMatchesRegularExpression("/[-A-Za-z0-9+\/=]+/", $crypto->encodeAsGzipBase64($value));
+        }
+
+        /**
+         * @dataProvider dataProvider
+         */
         public function testDecode(string $value): void
         {
             $crypto = new SymmetricalCrypto(self::$password);
             $encoded = $crypto->encode($value);
             self::assertSame($value, $crypto->decode($encoded));
+        }
+
+        /**
+         * @dataProvider dataProvider
+         */
+        public function testDecodeBase64(string $value): void
+        {
+            $crypto = new SymmetricalCrypto(self::$password);
+            $encoded = $crypto->encodeAsBase64($value);
+            self::assertSame($value, $crypto->decodeFromBase64($encoded));
+        }
+
+        /**
+         * @dataProvider dataProvider
+         */
+        public function testDecodeGzip(string $value): void
+        {
+            $crypto = new SymmetricalCrypto(self::$password);
+            $encoded = $crypto->encodeAsGzip($value);
+            self::assertSame($value, $crypto->decodeFromGzip($encoded));
+        }
+
+        /**
+         * @dataProvider dataProvider
+         */
+        public function testDecodeGzipBase64(string $value): void
+        {
+            $crypto = new SymmetricalCrypto(self::$password);
+            $encoded = $crypto->encodeAsGzipBase64($value);
+            self::assertSame($value, $crypto->decodeFromGzipBase64($encoded));
         }
 
         public static function dataProviderRaw(): \Generator
