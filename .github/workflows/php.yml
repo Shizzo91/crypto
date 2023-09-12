@@ -19,10 +19,10 @@ jobs:
 
     - name: add RSA keys
     - run: |
-      echo "${{ secrets.PRIVATE_1 }}" > private.pem
-      echo "${{ secrets.PRIVATE_2 }}" > private-2.pem
-      echo "${{ secrets.PUBLIC_1 }}" > public.pem
-      echo "${{ secrets.PUBLIC_2 }}" > public-2.pem
+        echo "${{ secrets.PRIVATE_1 }}" > private.pem
+        echo "${{ secrets.PRIVATE_2 }}" > private-2.pem
+        echo "${{ secrets.PUBLIC_1 }}" > public.pem
+        echo "${{ secrets.PUBLIC_2 }}" > public-2.pem
 
     - name: Validate composer.json and composer.lock
       run: composer validate --strict
