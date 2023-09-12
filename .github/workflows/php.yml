@@ -24,7 +24,7 @@ jobs:
         echo "${{ secrets.PUBLIC_1 }}" > public.pem
         echo "${{ secrets.PUBLIC_2 }}" > public-2.pem
 
-    - name: Install dependencies
+    - name: Creating Autoloader
       uses: php-actions/composer@v6
       with:
         php_version: "7.3"
@@ -37,6 +37,7 @@ jobs:
         php_version: "7.3"
         configuration: "tests/phpunit.xml"
         memory_limit: "256M"
+        version: "9.6.11"
 
     # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
     # Docs: https://getcomposer.org/doc/articles/scripts.md
