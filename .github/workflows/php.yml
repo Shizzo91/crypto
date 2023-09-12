@@ -35,8 +35,8 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "7.3"
-        bootstrap: "vendor/autoload.php"
-#        configuration: "tests/phpunit.xml"
+#        bootstrap: "vendor/autoload.php"
+        configuration: "tests/phpunit.xml"
         memory_limit: "256M"
         version: "9.6.11"
 
