@@ -1,4 +1,4 @@
-name: PHP Composer
+name: PHPUnit tests automate
 
 on:
   push:
@@ -11,13 +11,14 @@ permissions:
 
 jobs:
   unit:
-    name: PHPUnit
+    name: PHPUnit tests automate
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout
+      uses: actions/checkout@v3
 
-    - name: add RSA keys
+    - name: Add RSA keys for testing
       run: |
         echo "${{ secrets.PRIVATE_1 }}" > private.pem
         echo "${{ secrets.PRIVATE_2 }}" > private-2.pem
@@ -35,13 +36,6 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "7.3"
-#        bootstrap: "vendor/autoload.php"
         configuration: "tests/phpunit.xml"
         memory_limit: "256M"
         version: "9.6.11"
-
-    # Add a test script to composer.json, for instance: "test": "vendor/bin/phpunit"
-    # Docs: https://getcomposer.org/doc/articles/scripts.md
-
-    # - name: Run test suite
-    #   run: composer run-script test
