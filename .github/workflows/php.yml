@@ -122,7 +122,7 @@ jobs:
         dev: yes
         command: dump-autoload
 
-    - name: PHPUnit tests
+    - name: PHPUnit migrate configuration
       uses: php-actions/phpunit@v3
       with:
         php_version: "8.1"
@@ -130,6 +130,14 @@ jobs:
         memory_limit: "256M"
         version: "10.3.4"
         args: "--migrate-configuration"
+
+    - name: PHPUnit tests
+      uses: php-actions/phpunit@v3
+      with:
+        php_version: "8.1"
+        configuration: "tests/phpunit10.xml"
+        memory_limit: "256M"
+        version: "10.3.4"
 
   unit_php_82:
     name: PHPUnit tests automate with PHP 8.2
@@ -153,11 +161,19 @@ jobs:
         dev: yes
         command: dump-autoload
 
-    - name: PHPUnit tests
+    - name: PHPUnit migrate configuration
       uses: php-actions/phpunit@v3
       with:
-        php_version: "8.2"
+        php_version: "8.1"
         configuration: "tests/phpunit10.xml"
         memory_limit: "256M"
         version: "10.3.4"
         args: "--migrate-configuration"
+
+    - name: PHPUnit tests
+      uses: php-actions/phpunit@v3
+      with:
+        php_version: "8.1"
+        configuration: "tests/phpunit10.xml"
+        memory_limit: "256M"
+        version: "10.3.4"
