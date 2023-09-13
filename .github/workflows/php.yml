@@ -129,6 +129,7 @@ jobs:
         configuration: "tests/phpunit10.xml"
         memory_limit: "256M"
         version: "10.3.4"
+        args: "--migrate-configuration"
 
   unit_php_82:
     name: PHPUnit tests automate with PHP 8.2
@@ -159,3 +160,4 @@ jobs:
         configuration: "tests/phpunit10.xml"
         memory_limit: "256M"
         version: "10.3.4"
+        args: "--migrate-configuration"
