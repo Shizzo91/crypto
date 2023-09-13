@@ -50,8 +50,7 @@
                     $encodeProcess = openssl_public_encrypt(
                         $chunk,
                         $chunkOutput,
-                        $this->publicKey,
-                        OPENSSL_SSLV23_PADDING
+                        $this->publicKey
                     );
                     if (!$encodeProcess) {
                         $errorMsg = openssl_error_string();
