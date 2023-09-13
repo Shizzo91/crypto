@@ -36,9 +36,10 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "7.3"
-        configuration: "tests/phpunit.xml"
+        configuration: "tests/phpunit9.xml"
         memory_limit: "256M"
         version: "9.6.11"
+
   unit_php_74:
     name: PHPUnit tests automate with PHP 7.4
     runs-on: ubuntu-latest
@@ -65,9 +66,10 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "7.4"
-        configuration: "tests/phpunit.xml"
+        configuration: "tests/phpunit9.xml"
         memory_limit: "256M"
         version: "9.6.11"
+
   unit_php_80:
     name: PHPUnit tests automate with PHP 8.0
     runs-on: ubuntu-latest
@@ -94,9 +96,10 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "8.0"
-        configuration: "tests/phpunit.xml"
+        configuration: "tests/phpunit9.xml"
         memory_limit: "256M"
         version: "9.6.11"
+
   unit_php_81:
     name: PHPUnit tests automate with PHP 8.1
     runs-on: ubuntu-latest
@@ -123,8 +126,10 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "8.1"
-        configuration: "tests/phpunit.xml"
+        configuration: "tests/phpunit10.xml"
         memory_limit: "256M"
+        version: "10.3.4"
+
   unit_php_82:
     name: PHPUnit tests automate with PHP 8.2
     runs-on: ubuntu-latest
@@ -151,5 +156,6 @@ jobs:
       uses: php-actions/phpunit@v3
       with:
         php_version: "8.2"
-        configuration: "tests/phpunit.xml"
+        configuration: "tests/phpunit10.xml"
         memory_limit: "256M"
+        version: "10.3.4"
