@@ -2,13 +2,11 @@
 
     namespace Crypto\Asymmetric;
 
+    use Crypto\Helper\AbstractCrypto;
     use Crypto\Helper\CryptoException;
-    use Crypto\Helper\CryptoInterface;
-    use Crypto\Helper\CryptoTrait;
 
-    class DoubleCrypto implements CryptoInterface
+    class DoubleCrypto extends AbstractCrypto
     {
-        use CryptoTrait;
         protected $publicSimpleCrypto;
         protected $privateSimpleCrypto;
 
@@ -50,13 +48,13 @@
         }
 
         /**
-         * @param string $base64Cipher
+         * @param string $cipher
          * @return string
          * @throws CryptoException
          */
-        public function decode(string $base64Cipher): string
+        public function decode(string $cipher): string
         {
-            $publicDecodeData = $this->publicSimpleCrypto->decode($base64Cipher);
+            $publicDecodeData = $this->publicSimpleCrypto->decode($cipher);
             return $this->privateSimpleCrypto->decode($publicDecodeData);
         }
     }

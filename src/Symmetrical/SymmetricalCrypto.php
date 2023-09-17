@@ -2,13 +2,11 @@
 
     namespace Crypto\Symmetrical;
 
+    use Crypto\Helper\AbstractCrypto;
     use Crypto\Helper\CryptoException;
-    use Crypto\Helper\CryptoInterface;
-    use Crypto\Helper\CryptoTrait;
 
-    class SymmetricalCrypto implements CryptoInterface
+    class SymmetricalCrypto extends AbstractCrypto
     {
-        use CryptoTrait;
         protected $hashedPassword;
         public function __construct(
             string $password

@@ -2,9 +2,13 @@ name: PHPUnit tests automate
 
 on:
   push:
-    branches: [ "master" ]
+    branches:
+      - "master"
+      - "master-*"
+      - "master/*"
   pull_request:
-    branches: [ "master" ]
+    branches:
+      - "master"
 
 permissions:
   contents: read

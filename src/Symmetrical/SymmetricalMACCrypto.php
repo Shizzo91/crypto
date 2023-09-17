@@ -2,7 +2,6 @@
 
     namespace Crypto\Symmetrical;
 
-    use Crypto\Helper\CryptoTrait;
     use Crypto\Symmetrical\SymmetricalCrypto;
 
     class SymmetricalMACCrypto extends SymmetricalCrypto

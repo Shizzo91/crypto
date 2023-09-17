@@ -2,9 +2,41 @@
 
     namespace Crypto\Helper;
 
-    trait CryptoTrait
+    abstract class AbstractCrypto
     {
         /**
+         * max encrypt block size
+         *
+         * @var int
+         */
+        public const ENCRYPT_BLOCK_SIZE = 200;
+
+        /**
+         * max decrypt block size
+         *
+         * @var int
+         */
+        public const DECRYPT_BLOCK_SIZE = 256;
+
+        /**
+         * define the encode function
+         *
+         * @param string $data
+         * @return string
+         */
+        abstract public function encode(string $data): string;
+
+        /**
+         * define the decode function
+         *
+         * @param string $cipher
+         * @return string
+         */
+        abstract public function decode(string $cipher): string;
+
+        /**
+         * uses encode function and returns it as base64 string
+         *
          * @param string $data
          * @return string
          * @throws CryptoException
@@ -15,6 +47,8 @@
         }
 
         /**
+         * uses encode function and gzip it
+         *
          * @param string $data
          * @param int $level
          * @param int $encoding
@@ -25,7 +59,7 @@
             string $data,
             int $level = -1,
             int $encoding = ZLIB_ENCODING_DEFLATE
-            ): string
+        ): string
         {
             $gzipCipher = gzcompress($this->encode($data), $level, $encoding);
             if (!is_string($gzipCipher)) {
@@ -36,6 +70,8 @@
         }
 
         /**
+         * uses encode function, gzip it and returns it as base64 string
+         *
          * @param string $data
          * @param int $level
          * @param int $encoding
@@ -52,6 +88,8 @@
         }
 
         /**
+         * uses decode function it from a base64 string
+         *
          * @param string $base64Cipher
          * @return string
          * @throws CryptoException
@@ -66,6 +104,8 @@
         }
 
         /**
+         * uses decode function it from a gzip binary string
+         *
          * @param string $cipherGzip
          * @param int $maxLength
          * @return string
@@ -86,6 +126,8 @@
         }
 
         /**
+         * uses decode function it from a gzip base64 string
+         *
          * @param string $base64Cipher
          * @param int $maxLength
          * @return string
@@ -102,4 +144,5 @@
             }
             return $this->decodeFromGzip($cipherGzip)    ;
         }
+
     }
