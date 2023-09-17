@@ -2,13 +2,11 @@
 
     namespace Crypto\Asymmetric;
 
+    use Crypto\Helper\AbstractCrypto;
     use Crypto\Helper\CryptoException;
-    use Crypto\Helper\CryptoInterface;
-    use Crypto\Helper\CryptoTrait;
 
-    class PublicSimpleCrypto implements CryptoInterface
+    class PublicSimpleCrypto extends AbstractCrypto
     {
-        use CryptoTrait;
         protected $publicKey;
 
         /**

@@ -5,15 +5,13 @@
     use Crypto\Asymmetric\DoubleCrypto;
     use Crypto\Asymmetric\PrivateSimpleCrypto;
     use Crypto\Asymmetric\PublicSimpleCrypto;
+    use Crypto\Helper\AbstractCrypto;
     use Crypto\Helper\CryptoException;
-    use Crypto\Helper\CryptoInterface;
-    use Crypto\Helper\CryptoTrait;
     use Crypto\Symmetrical\SymmetricalCrypto;
     use Crypto\Symmetrical\SymmetricalMACCrypto;
 
-    class HybridCrypto implements CryptoInterface
+    class HybridCrypto extends AbstractCrypto
     {
-        use CryptoTrait;
         protected $asymmetricCrypto;
         protected $symmetricalCrypto;
 
